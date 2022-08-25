@@ -69,10 +69,10 @@ async function fetchTopLanguages(username, exclude_repo = []) {
 
     repoNodes = repoNodes.concat(res.data.data.user.repositories.nodes);
     if (!res.data.data.user.repositories.edges ||
-      res.data.data.user.repositories.edges.length < pageSize) {
+      res.data.data.user.repositories.edges.length < 1) {
       break;
     }
-    pageCursor = res.data.data.user.repositories.edges[pageSize - 1].cursor;
+    pageCursor = res.data.data.user.repositories.edges[res.data.data.user.repositories.edges.length - 1].cursor;
   }
 
   let repoToHide = {};
