@@ -1,4 +1,4 @@
-const themes = {
+export const themes = {
   default: {
     title_color: "2f80ed",
     icon_color: "4c71f2",
@@ -11,6 +11,12 @@ const themes = {
     icon_color: "586069", // icon color is different
     text_color: "434d58",
     bg_color: "fffefe",
+  },
+  transparent: {
+    title_color: "006AFF",
+    icon_color: "0579C3",
+    text_color: "417E87",
+    bg_color: "ffffff00",
   },
   dark: {
     title_color: "fff",
@@ -355,12 +361,40 @@ const themes = {
     bg_color: "09131B",
     border_color: "0c1a25",
   },
-  "rose_pine":{
+  rose_pine: {
     title_color: "9ccfd8",
     icon_color: "ebbcba",
     text_color: "e0def4",
     bg_color: "191724",
-  }
+  },
+  date_night: {
+    title_color: "DA7885",
+    text_color: "E1B2A2",
+    icon_color: "BB8470",
+    border_color: "170F0C",
+    bg_color: "170F0C",
+  },
+  one_dark_pro: {
+    title_color: "61AFEF",
+    text_color: "E5C06E",
+    icon_color: "C678DD",
+    border_color: "3B4048",
+    bg_color: "23272E",
+  },
+  rose: {
+    title_color: "8d192b",
+    text_color: "862931",
+    icon_color: "B71F36",
+    border_color: "e9d8d4",
+    bg_color: "e9d8d4",
+  },
+  holi_theme: {
+    title_color: "5FABEE",
+    text_color: "D6E7FF",
+    icon_color: "5FABEE",
+    border_color: "85A4C0",
+    bg_color: "030314",
+  },
 };
 
-module.exports = themes;
+export default themes;
