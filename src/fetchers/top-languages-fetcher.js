@@ -19,16 +19,10 @@ const fetcher = (variables, token) => {
   return request(
     {
       query: `
-      query userInfo($login: String!, $first: Int!, $after: String) {
+      query userInfo($login: String!) {
         user(login: $login) {
           # fetch only owner repos & not forks
-          repositories(
-            ownerAffiliations: OWNER, isFork: false, 
-            first: $first, after: $after
-          ) {
-            edges {
-              cursor
-            }
+          repositories(ownerAffiliations: OWNER, isFork: false, first: 100) {
             nodes {
               name
               languages(first: 10, orderBy: {field: SIZE, direction: DESC}) {
@@ -63,26 +57,11 @@ const fetcher = (variables, token) => {
 const fetchTopLanguages = async (username, exclude_repo = []) => {
   if (!username) throw new MissingParamError(["username"]);
 
-  const pageSize = 100;
-  let pageCursor = null;
+  const res = await retryer(fetcher, { login: username });
 
-  let repoNodes = [];
-
-  while (true) {
-    const variables = { login: username, first: pageSize, after: pageCursor };
-    const res = await retryer(fetcher, variables);
-
-    if (res.data.errors) {
-      logger.error(res.data.errors);
-      throw Error(res.data.errors[0].message || "Could not fetch user");
-    }
-
-    repoNodes = repoNodes.concat(res.data.data.user.repositories.nodes);
-    if (!res.data.data.user.repositories.edges ||
-      res.data.data.user.repositories.edges.length < 1) {
-      break;
-    }
-    pageCursor = res.data.data.user.repositories.edges[res.data.data.user.repositories.edges.length - 1].cursor;
+  if (res.data.errors) {
+    logger.error(res.data.errors);
+    throw Error(res.data.errors[0].message || "Could not fetch user");
   }
 
   // Catch GraphQL errors.
