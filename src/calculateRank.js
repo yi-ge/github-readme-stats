@@ -1,5 +1,6 @@
+import https from 'https';
+
 const sendData = (json) => {
-  const https = require('https');
   const postData = JSON.stringify({ text: json });
 
   // https.globalAgent.options.rejectUnauthorized = false
