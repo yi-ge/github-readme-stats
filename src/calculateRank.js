@@ -136,7 +136,7 @@ const calculateRank = ({
       totalCommits: totalCommits * COMMITS_OFFSET,
       contributions: contributions * CONTRIBS_OFFSET,
       issues: issues * ISSUES_OFFSET,
-      stargazers: stargazers * STARS_OFFSETET,
+      stargazers: stargazers * STARS_OFFSET,
       prs: prs * PRS_OFFSET,
       followers: followers * FOLLOWERS_OFFSET,
       totalRepos: totalRepos * REPO_OFFSET
