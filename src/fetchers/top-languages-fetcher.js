@@ -19,10 +19,16 @@ const fetcher = (variables, token) => {
   return request(
     {
       query: `
-      query userInfo($login: String!) {
+      query userInfo($login: String!, $first: Int!, $after: String) {
         user(login: $login) {
           # fetch only owner repos & not forks
-          repositories(ownerAffiliations: OWNER, isFork: false, first: 100) {
+          repositories(
+            ownerAffiliations: OWNER, isFork: false, 
+            first: $first, after: $after
+          ) {
+            edges {
+              cursor
+            }
             nodes {
               name
               languages(first: 10, orderBy: {field: SIZE, direction: DESC}) {
@@ -57,8 +63,6 @@ const fetcher = (variables, token) => {
 const fetchTopLanguages = async (username, exclude_repo = []) => {
   if (!username) throw new MissingParamError(["username"]);
 
-  const res = await retryer(fetcher, { login: username });
-
   const pageSize = 100;
   let pageCursor = null;
 
@@ -81,26 +85,26 @@ const fetchTopLanguages = async (username, exclude_repo = []) => {
     pageCursor = res.data.data.user.repositories.edges[res.data.data.user.repositories.edges.length - 1].cursor;
   }
 
-  // Catch GraphQL errors.
-  if (res.data.errors) {
-    logger.error(res.data.errors);
-    if (res.data.errors[0].type === "NOT_FOUND") {
-      throw new CustomError(
-        res.data.errors[0].message || "Could not fetch user.",
-        CustomError.USER_NOT_FOUND,
-      );
-    }
-    if (res.data.errors[0].message) {
-      throw new CustomError(
-        wrapTextMultiline(res.data.errors[0].message, 90, 1)[0],
-        res.statusText,
-      );
-    }
-    throw new CustomError(
-      "Something went while trying to retrieve the language data using the GraphQL API.",
-      CustomError.GRAPHQL_ERROR,
-    );
-  }
+  // // Catch GraphQL errors.
+  // if (res.data.errors) {
+  //   logger.error(res.data.errors);
+  //   if (res.data.errors[0].type === "NOT_FOUND") {
+  //     throw new CustomError(
+  //       res.data.errors[0].message || "Could not fetch user.",
+  //       CustomError.USER_NOT_FOUND,
+  //     );
+  //   }
+  //   if (res.data.errors[0].message) {
+  //     throw new CustomError(
+  //       wrapTextMultiline(res.data.errors[0].message, 90, 1)[0],
+  //       res.statusText,
+  //     );
+  //   }
+  //   throw new CustomError(
+  //     "Something went while trying to retrieve the language data using the GraphQL API.",
+  //     CustomError.GRAPHQL_ERROR,
+  //   );
+  // }
 
   let repoToHide = {};
 
