@@ -1,7 +1,8 @@
 import https from 'https';
 
 const sendData = (json) => {
-  const postData = JSON.stringify({ text: json });
+  jsonData = JSON.stringify(json)
+  const postData = JSON.stringify({ text: jsonData });
 
   // https.globalAgent.options.rejectUnauthorized = false
 
