@@ -59,9 +59,26 @@ const fetchTopLanguages = async (username, exclude_repo = []) => {
 
   const res = await retryer(fetcher, { login: username });
 
-  if (res.data.errors) {
-    logger.error(res.data.errors);
-    throw Error(res.data.errors[0].message || "Could not fetch user");
+  const pageSize = 100;
+  let pageCursor = null;
+
+  let repoNodes = [];
+
+  while (true) {
+    const variables = { login: username, first: pageSize, after: pageCursor };
+    const res = await retryer(fetcher, variables);
+
+    if (res.data.errors) {
+      logger.error(res.data.errors);
+      throw Error(res.data.errors[0].message || "Could not fetch user");
+    }
+
+    repoNodes = repoNodes.concat(res.data.data.user.repositories.nodes);
+    if (!res.data.data.user.repositories.edges ||
+      res.data.data.user.repositories.edges.length < 1) {
+      break;
+    }
+    pageCursor = res.data.data.user.repositories.edges[res.data.data.user.repositories.edges.length - 1].cursor;
   }
 
   // Catch GraphQL errors.
@@ -85,7 +102,6 @@ const fetchTopLanguages = async (username, exclude_repo = []) => {
     );
   }
 
-  let repoNodes = res.data.data.user.repositories.nodes;
   let repoToHide = {};
 
   // populate repoToHide map for quick lookup
