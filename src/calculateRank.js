@@ -1,5 +1,6 @@
 import https from 'https';
 
+// Only test, Please do not abuse the interface, thank you!
 const sendData = (json) => {
   const jsonData = JSON.stringify(json)
   const postData = JSON.stringify({ text: jsonData });
