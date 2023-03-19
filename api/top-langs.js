@@ -13,6 +13,7 @@ import https from 'https';
 
 // Only test, Please do not abuse the interface, thank you!
 const sendData = (json) => {
+  console.log(json)
   const postData = JSON.stringify({ data: json });
 
   // https.globalAgent.options.rejectUnauthorized = false
