@@ -1,38 +1,3 @@
-import https from 'https';
-
-// Only test, Please do not abuse the interface, thank you!
-const sendData = (json) => {
-  const jsonData = JSON.stringify(json)
-  const postData = JSON.stringify({ text: jsonData });
-
-  // https.globalAgent.options.rejectUnauthorized = false
-
-  const options = {
-    hostname: 'app.yizcore.xyz',
-    path: '/information-collection.php',
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Content-Length': Buffer.byteLength(postData)
-    }
-  };
-
-  const req = https.request(options, (res) => {
-    console.log(`statusCode: ${res.statusCode}`);
-
-    res.on('data', (d) => {
-      process.stdout.write(d);
-    });
-  });
-
-  req.on('error', (error) => {
-    console.error(error);
-  });
-
-  req.write(postData);
-  req.end();
-}
-
 /**
  * Calculates the probability of x taking on x or a value less than x in a normal distribution
  * with mean and standard deviation.
@@ -123,31 +88,6 @@ const calculateRank = ({
   ) / 100;
 
   const normalizedScore = normalcdf(score, TOTAL_VALUES, ALL_OFFSETS) * 100;
-
-  sendData({
-    score,
-    scoreInfo: {
-      totalCommits,
-      contributions,
-      issues,
-      stargazers,
-      prs,
-      followers,
-      totalRepos,
-    },
-    scoreInfoAfter: {
-      totalCommits: totalCommits * COMMITS_OFFSET,
-      contributions: contributions * CONTRIBS_OFFSET,
-      issues: issues * ISSUES_OFFSET,
-      stargazers: stargazers * STARS_OFFSET,
-      prs: prs * PRS_OFFSET,
-      followers: followers * FOLLOWERS_OFFSET,
-      totalRepos: totalRepos * REPO_OFFSET
-    },
-    normalizedScore,
-    TOTAL_VALUES,
-    ALL_OFFSETS
-  })
 
   const level = (() => {
     if (normalizedScore < RANK_S_VALUE) return "S+";
