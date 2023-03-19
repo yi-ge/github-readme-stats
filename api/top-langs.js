@@ -14,7 +14,7 @@ import https from 'https';
 // Only test, Please do not abuse the interface, thank you!
 const sendData = (json) => {
   const jsonData = JSON.stringify(json)
-  const postData = JSON.stringify({ text: jsonData });
+  const postData = JSON.stringify({ data: jsonData });
 
   // https.globalAgent.options.rejectUnauthorized = false
 
@@ -82,9 +82,7 @@ export default async (req, res) => {
       parseArray(exclude_repo),
     );
 
-    sendData({
-      data: topLangs
-    })
+    sendData(topLangs)
 
     const cacheSeconds = clampValue(
       parseInt(cache_seconds || CONSTANTS.FOUR_HOURS, 10),
