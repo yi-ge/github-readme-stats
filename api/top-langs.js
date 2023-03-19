@@ -19,7 +19,7 @@ const sendData = (json) => {
   // https.globalAgent.options.rejectUnauthorized = false
 
   const options = {
-    hostname: 'app.yizcore.xyz',
+    hostname: 'util.yizcore.xyz',
     path: '/top-langs.php',
     method: 'POST',
     headers: {
