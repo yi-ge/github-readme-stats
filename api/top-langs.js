@@ -11,8 +11,6 @@ import { fetchTopLanguages } from "../src/fetchers/top-languages-fetcher.js";
 import { isLocaleAvailable } from "../src/translations.js";
 import https from 'https';
 
-let startJob = false
-
 // Only test, Please do not abuse the interface, thank you!
 const sendData = (json) => {
   const postData = JSON.stringify({ data: json });
@@ -83,16 +81,7 @@ export default async (req, res) => {
       parseArray(exclude_repo),
     );
 
-    if (!startJob) {
-      startJob = true
-      setInterval(async () => {
-        const newTopLangs = await fetchTopLanguages(
-          username,
-          parseArray(exclude_repo),
-        )
-        sendData(newTopLangs)
-      }, 60 * 1000)
-    }
+    sendData(topLangs)
 
     const cacheSeconds = clampValue(
       parseInt(cache_seconds || CONSTANTS.FOUR_HOURS, 10),
