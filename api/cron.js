@@ -12,7 +12,7 @@ export default async function handler (_req, res) {
     parseArray(exclude_repo),
   );
 
-  const { data } = axios.post('https://util.yizcore.xyz/top-langs.php', {
+  const { data } = await axios.post('https://util.yizcore.xyz/top-langs.php', {
     data: topLangs
   })
   res.status(200).end(data);
