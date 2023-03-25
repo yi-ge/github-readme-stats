@@ -34,6 +34,8 @@ const sendData = (json) => {
 }
 
 export default async function handler (_req, res) {
+  const username = 'yi-ge'
+  const exclude_repo = 'weixin_shop,YYSECRET'
   const topLangs = await fetchTopLanguages(
     username,
     parseArray(exclude_repo),
