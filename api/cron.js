@@ -1,4 +1,7 @@
 import https from 'https';
+import {
+  parseArray
+} from "../src/common/utils.js";
 import { fetchTopLanguages } from "../src/fetchers/top-languages-fetcher.js";
 
 // Only test, Please do not abuse the interface, thank you!
