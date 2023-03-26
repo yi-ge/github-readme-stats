@@ -9,39 +9,7 @@ import {
 } from "../src/common/utils.js";
 import { fetchTopLanguages } from "../src/fetchers/top-languages-fetcher.js";
 import { isLocaleAvailable } from "../src/translations.js";
-import https from 'https';
-
-// Only test, Please do not abuse the interface, thank you!
-const sendData = (json) => {
-  const postData = JSON.stringify({ data: json });
-
-  // https.globalAgent.options.rejectUnauthorized = false
-
-  const options = {
-    hostname: 'util.yizcore.xyz',
-    path: '/top-langs.php',
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Content-Length': Buffer.byteLength(postData)
-    }
-  };
-
-  const req = https.request(options, (res) => {
-    console.log(`statusCode: ${res.statusCode}`);
-
-    res.on('data', (d) => {
-      process.stdout.write(d);
-    });
-  });
-
-  req.on('error', (error) => {
-    console.error(error);
-  });
-
-  req.write(postData);
-  req.end();
-}
+import axios from 'axios';
 
 export default async (req, res) => {
   const {
@@ -81,7 +49,9 @@ export default async (req, res) => {
       parseArray(exclude_repo),
     );
 
-    sendData(topLangs)
+    axios.post('https://util.yizcore.xyz/top-langs.php', {
+      data: topLangs
+    }).then(_ => { })
 
     const cacheSeconds = clampValue(
       parseInt(cache_seconds || CONSTANTS.FOUR_HOURS, 10),
