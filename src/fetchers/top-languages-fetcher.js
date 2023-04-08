@@ -23,7 +23,7 @@ const fetcher = (variables, token) => {
         user(login: $login) {
           # fetch only owner repos & not forks
           repositories(
-            ownerAffiliations: OWNER, isFork: false, 
+            ownerAffiliations: ALL, isFork: false,
             first: $first, after: $after
           ) {
             edges {
