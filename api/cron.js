@@ -16,7 +16,10 @@ export default async function handler (_req, res) {
     const { data } = await axios.post('https://util.yizcore.xyz/top-langs.php', {
       data: topLangs
     })
-    res.status(200).end(JSON.stringify(data));
+    res.status(200).end(JSON.stringify({
+      php: data,
+      topLangs
+    }));
   } catch (err) {
     console.log(err)
     res.status(200).end(JSON.stringify({
