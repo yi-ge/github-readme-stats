@@ -79,13 +79,15 @@ const fetchTopLanguages = async (username, exclude_repo = []) => {
       throw Error(res.data.errors[0].message || "Could not fetch user");
     }
 
+    console.log(res.data.data.user.repositories.nodes)
+
     repoNodes = repoNodes.concat(res.data.data.user.repositories.nodes);
     if (!res.data.data.user.repositories.edges ||
       res.data.data.user.repositories.edges.length < 1) {
       break;
     }
     pageCursor = res.data.data.user.repositories.edges[res.data.data.user.repositories.edges.length - 1].cursor;
-    sleep(1000)
+    sleep(500)
   }
 
   // // Catch GraphQL errors.
