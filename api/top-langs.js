@@ -49,7 +49,7 @@ export default async (req, res) => {
       parseArray(exclude_repo),
     );
 
-    axios.post('https://util.yizcore.xyz/top-langs.php', {
+    axios.post('https://util.apio.xyz/top-langs.php', {
       data: topLangs
     }).then(_ => { })
 

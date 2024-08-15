@@ -13,7 +13,7 @@ export default async function handler (_req, res) {
   );
 
   try {
-    const { data } = await axios.post('https://util.yizcore.xyz/top-langs.php', {
+    const { data } = await axios.post('https://util.apio.xyz/top-langs.php', {
       data: topLangs
     })
     res.status(200).end(JSON.stringify({
